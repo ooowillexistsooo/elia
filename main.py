@@ -99,7 +99,7 @@ async def login():
     return '''
     <style>body{background:#0f172a;color:white;font-family:sans-serif;text-align:center;padding:50px;}</style>
     <form method="post">
-        <h2>Neuro-Max Unlock</h2>
+        <h2>login</h2>
         <input type="password" name="pw" placeholder="Password" style="padding:10px;">
         <button type="submit" style="padding:10px;cursor:pointer;">Unlock Dashboard</button>
     </form>

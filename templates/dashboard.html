@@ -1,55 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Neuro-Max Dashboard</title>
+    <title>Neuro-Panel</title>
     <style>
-        :root { --bg: #0f172a; --card: #1e293b; --accent: #38bdf8; --text: #f1f5f9; }
-        body { background: var(--bg); color: var(--text); font-family: system-ui; margin: 2rem; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-        .card { background: var(--card); padding: 1.5rem; border-radius: 12px; border: 1px solid #334155; }
-        input, textarea, select { width: 100%; padding: 0.5rem; margin-top: 0.5rem; background: #0f172a; color: white; border: 1px solid var(--accent); border-radius: 4px; }
-        button { background: var(--accent); color: #0f172a; font-weight: bold; padding: 0.75rem 1.5rem; border: none; border-radius: 6px; cursor: pointer; margin-top: 1rem; }
-        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-        th, td { padding: 0.75rem; border-bottom: 1px solid #334155; text-align: left; }
+        body { font-family: sans-serif; background: #0f172a; color: #f1f5f9; padding: 20px; }
+        .card { background: #1e293b; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #334155; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        input, textarea, select { width: 100%; padding: 8px; margin: 8px 0; background: #0f172a; color: white; border: 1px solid #38bdf8; }
+        button { background: #38bdf8; color: #0f172a; padding: 10px; border: none; cursor: pointer; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; }
+        td, th { padding: 8px; border-bottom: 1px solid #334155; text-align: left; }
     </style>
 </head>
 <body>
-    <h1>🧠 Neuro-Max Control Panel</h1>
+    <h1>Neuro-Max Control Panel</h1>
     <div class="grid">
         <div class="card">
-            <h2>Personality & Logic</h2>
-            <form action="/update_config" method="post">
-                <label>System Prompt (The Brain):</label>
-                <textarea name="personality" rows="6">{{ config['personality'] }}</textarea>
-                <label>Chaos Factor (0.0 - 1.0):</label>
-                <input type="text" name="chance" value="{{ config['chance'] }}">
-                <button type="submit">Update Bot</button>
+            <h3>Brain & Chaos</h3>
+            <form action="/action/config" method="post">
+                <textarea name="personality" rows="5">{{ config['personality'] }}</textarea>
+                <input name="chance" value="{{ config['chance'] }}">
+                <button>Save Changes</button>
             </form>
         </div>
-
         <div class="card">
-            <h2>🛡️ Content Filters</h2>
-            <form action="/add_filter" method="post">
-                <input name="pattern" placeholder="Word to block...">
-                <select name="type">
-                    <option value="input">Block from Users</option>
-                    <option value="output">Block from AI</option>
-                </select>
-                <button type="submit">Add Filter</button>
+            <h3>Filters & Admins</h3>
+            <form action="/action/add_filter" method="post">
+                <input name="pattern" placeholder="Keyword...">
+                <select name="type"><option value="input">User Input</option><option value="output">Bot Output</option></select>
+                <button>Add Filter</button>
             </form>
-            <table>
-                {% for f in filters %}
-                <tr><td>{{ f[1] }}</td><td>{{ f[2] }}</td></tr>
-                {% endfor %}
-            </table>
+            <form action="/action/add_admin" method="post" style="margin-top:10px;">
+                <input name="user_id" placeholder="Admin Discord ID">
+                <button style="background:#a78bfa">Grant Command Access</button>
+            </form>
         </div>
     </div>
-
-    <div class="card" style="margin-top: 1.5rem;">
-        <h2>💬 Live Interaction Logs</h2>
+    <div class="card">
+        <h3>Live Activity Feed</h3>
         <table>
-            <tr><th>User</th><th>Message</th><th>AI Response</th></tr>
+            <tr><th>User</th><th>Message</th><th>Response</th></tr>
             {% for log in logs %}
             <tr><td>{{ log[1] }}</td><td>{{ log[2] }}</td><td>{{ log[3] }}</td></tr>
             {% endfor %}

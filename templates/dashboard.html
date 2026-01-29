@@ -1,45 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Neuro-Panel</title>
+    <title>Neuro Dashboard</title>
     <style>
-        body { font-family: sans-serif; background: #0f172a; color: #f1f5f9; padding: 20px; }
-        .card { background: #1e293b; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #334155; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        input, textarea, select { width: 100%; padding: 8px; margin: 8px 0; background: #0f172a; color: white; border: 1px solid #38bdf8; }
-        button { background: #38bdf8; color: #0f172a; padding: 10px; border: none; cursor: pointer; font-weight: bold; }
+        body { background: #0f172a; color: #f1f5f9; font-family: sans-serif; padding: 20px; }
+        .card { background: #1e293b; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #334155; }
+        input, textarea { width: 100%; padding: 10px; margin: 10px 0; background: #0f172a; color: white; border: 1px solid #38bdf8; border-radius: 4px; }
+        button { background: #38bdf8; color: #0f172a; padding: 12px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
         table { width: 100%; border-collapse: collapse; }
-        td, th { padding: 8px; border-bottom: 1px solid #334155; text-align: left; }
+        th, td { padding: 12px; border-bottom: 1px solid #334155; text-align: left; }
     </style>
 </head>
 <body>
-    <h1>Neuro-Max Control Panel</h1>
-    <div class="grid">
+    <h1>🧠 Neuro-Max Brain Center</h1>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
         <div class="card">
-            <h3>Brain & Chaos</h3>
+            <h3>Personality & Chaos</h3>
             <form action="/action/config" method="post">
+                <label>System Prompt:</label>
                 <textarea name="personality" rows="5">{{ config['personality'] }}</textarea>
+                <label>Chaos Factor (0.0 to 1.0):</label>
                 <input name="chance" value="{{ config['chance'] }}">
-                <button>Save Changes</button>
+                <button type="submit">Save Changes</button>
             </form>
         </div>
+
         <div class="card">
-            <h3>Filters & Admins</h3>
-            <form action="/action/add_filter" method="post">
-                <input name="pattern" placeholder="Keyword...">
-                <select name="type"><option value="input">User Input</option><option value="output">Bot Output</option></select>
-                <button>Add Filter</button>
+            <h3>👑 Discord Admins</h3>
+            <form action="/action/add_admin" method="post">
+                <input name="user_id" placeholder="Discord User ID">
+                <button type="submit">Grant Access</button>
             </form>
-            <form action="/action/add_admin" method="post" style="margin-top:10px;">
-                <input name="user_id" placeholder="Admin Discord ID">
-                <button style="background:#a78bfa">Grant Command Access</button>
-            </form>
+            <table>
+                {% for admin in admins %}
+                <tr>
+                    <td>{{ admin[0] }}</td>
+                    <td><form action="/action/remove_admin" method="post"><input type="hidden" name="user_id" value="{{ admin[0] }}"><button style="background:red; padding: 5px;">X</button></form></td>
+                </tr>
+                {% endfor %}
+            </table>
         </div>
     </div>
+
     <div class="card">
-        <h3>Live Activity Feed</h3>
+        <h3>💬 Live Chat Logs</h3>
         <table>
-            <tr><th>User</th><th>Message</th><th>Response</th></tr>
+            <tr><th>User</th><th>Message</th><th>AI Response</th></tr>
             {% for log in logs %}
             <tr><td>{{ log[1] }}</td><td>{{ log[2] }}</td><td>{{ log[3] }}</td></tr>
             {% endfor %}
